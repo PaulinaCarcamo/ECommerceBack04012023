@@ -1,10 +1,10 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Backend section of eCommerce app test.",
-  "main": "index.js", "type": "module",
+  "description": "Backend",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
