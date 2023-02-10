@@ -2,12 +2,11 @@ const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema(
     {
-        email: { type: String, required: true, unique: true},
-        password: { type: String, required: true},
-        isAdmin: {
-            type: Boolean,
-            default: false,
-        },
+        username: { type: String, required: true, unique: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        // role: { type: String, default: "Basic", required: true},
+        isAdmin: { type: Boolean, default: false },
     },
     { timestamps: true }
 )
