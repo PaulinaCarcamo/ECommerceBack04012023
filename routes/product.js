@@ -2,24 +2,24 @@ const router = require("express").Router()
 const Product = require("../models/Product")
 const {
     verifyTokenAndAdmin,
-    verifyToken,
-    verifyTokenAndAuthorization,
+    // verifyToken,
+    // verifyTokenAndAuthorization,
 } = require("./verifyToken")
 
 //CREATE
 
-router.post("/", 
-// verifyTokenAndAdmin, 
-async (req,res) => {
-    const newProduct = new Product(req.body)
+router.post("/",
+    // verifyTokenAndAdmin, 
+    async (req, res) => {
+        const newProduct = new Product(req.body)
 
-    try {
-        const savedProduct = await newProduct.save()
-        res.status(200).json(savedProduct)
-    } catch (err) {
-        res.status(500).json(err)
-    }
-})
+        try {
+            const savedProduct = await newProduct.save()
+            res.status(200).json(savedProduct)
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    })
 
 //UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
@@ -29,10 +29,10 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
             {
                 $set: req.body,
             },
-            { new : true }
+            { new: true }
         )
         res.status(200).json(updatedProduct)
-    } catch (err)  {
+    } catch (err) {
         res.status(500).json(err)
     }
 })
@@ -68,16 +68,17 @@ router.get("/", async (req, res) => {
         let products
 
         if (qNew) { //IF THERE IS A QUERY FOR NEW PRODUCTS
-            products = await Product.find().sort({createdAt: -1}).limit(5) //SORTING THE PRODUCTS WITH A LIMIT OF 5
-        } else if(qCategory){ //IF THERE IS A QUERY FOR CATEGORIES
+            products = await Product.find().sort({ createdAt: -1 }).limit(5) //SORTING THE PRODUCTS WITH A LIMIT OF 5
+        } else if (qCategory) { //IF THERE IS A QUERY FOR CATEGORIES
             products = await Product.find({ //THE SAME BUT WITH CONDITIONS
                 categories: { //IF THE CATEGORY QUERY IS INSIDE THE CATEGORIES ARRAY THE PRODUCTS WILL BE FETCHED
                     $in: [qCategory],
-                }})
-        }else{ //IF THERE IS NO QUERY ALL THE PRODUCTS IN THE DB WILL BE RETURNED
+                }
+            })
+        } else { //IF THERE IS NO QUERY ALL THE PRODUCTS IN THE DB WILL BE RETURNED
             products = await Product.find()
         }
- 
+
         res.status(200).json(products) //PASSING THE PRODUCTS
     } catch (err) {
         res.status(500).json(err)

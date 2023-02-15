@@ -68,33 +68,4 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
     }
 })
 
-//GET MONTHLY INCOME (OPTIONAL)
-
-// router.get("/income", verifyTokenAndAdmin, async (req, res) => {
-//     const date = new Date() //ONLY USING THIS MONTH AND THE PREVIOUS MONTH TO COMPARE THE INCOMES
-//     const lastMonth = new Date(date.setMonth(date.getMonth() - 1))
-//     const previousMonth = new Date(date.setMonth(lastMonth.getMonth() - 1)) //THIS MEANS 2 MONTHS IN THE PAST
-
-//     try {
-//         const income = await Order.aggregate([
-//             { $match: { createdAt: { $gte: previousMonth } } },
-//             {
-//                 $project: {
-//                     month: { $month: "$createdAt" },
-//                     sales: "$amount" //AMOUNT FROM ORDERS.JS
-//                 }
-//             },
-//             {
-//                 $group: {
-//                     _id: "$month",
-//                     total: { $sum: "$sales" }
-//                 },
-//             },
-//         ])
-//         res.status(200).json(income)
-//     } catch (err) {
-//         res.status(500).json(err)
-//     }
-// })
-
 module.exports = router
