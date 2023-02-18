@@ -3,9 +3,7 @@ const jwt = require("jsonwebtoken")
 const CryptoJS = require("crypto-js")
 const User = require("../models/User.js")
 
-//REGISTER USER
-
-//ASYNC REQUEST FROM USER
+//USER REGISTER
 router.post("/register", async (req, res) => {
 
     const { password } = req.body
@@ -31,31 +29,9 @@ router.post("/register", async (req, res) => {
     }
 });
 
-//     bcrypt.hash(password, 10).then(async (hash) => {
-//         await User.create({
-//             username,
-//             email,
-//             password: hash,
-//         })
-//             .then((user) => {
-//                 const maxAge = 3 * 60 * 60;
-//                 const token = jwt.sign(
-//                     //   { id: user._id, username, role: user.role },
-//                     { id: user._id, email },
-//                     JWT_SEC,
-//                     {
-//                         expiresIn: maxAge, // 3hrs in sec
-//                     }
-//                 );
-//                 res.cookie("jwt", token, {
-//                     httpOnly: true,
-//                     maxAge: maxAge * 1000, // 3hrs in ms
-//                 });
-
-// LOGIN USER
-
-//FINDING USER INSIDE DB //DECRYPTING PREVIOUSLY CRYPTED PW
+//USER LOGIN
 router.post("/login", async (req, res) => {
+    //FINDING USER INSIDE DB //DECRYPTING PREVIOUSLY CRYPTED PW
     const { email, password } = req.body
     if (!email || !password) {
         return res.status(401).json("User or Password NOT Found")
@@ -69,7 +45,7 @@ router.post("/login", async (req, res) => {
             user.password,
             process.env.PASS_SEC
         )
-        // // UTF8 IS FOR SPECIAL CHARACTERS IF NEEDED
+        // // UTF8 FOR SPECIAL CHARACTERS IF NEEDED
         const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8)
         if (originalPassword !== req.body.password) {
             return res.status(401).json("Invalid Password.")
@@ -83,7 +59,7 @@ router.post("/login", async (req, res) => {
             process.env.JWT_SEC,
             { expiresIn: "3d" })
 
-        //DESTRUCTURING THE USER. IF SUCCESS, THE USER ("...others"), IS RETURNED AS JSON + TOKEN
+        //DESTRUCTURING THE USER. IF SUCCESS, THE USER ("...others") IS RETURNED AS JSON + TOKEN
         const { password, ...others } = user._doc
         res.status(200).json({ ...others, accessToken })
 
